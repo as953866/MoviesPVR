@@ -1,0 +1,115 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="MoviesPVR.SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Movies PVR</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/Content/Site.css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+</head>
+<body>
+    <form runat="server" class="form">
+        <asp:ScriptManager runat="server">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="MsAjaxBundle" />
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="WebForms.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js" Assembly="System.Web" Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js" Assembly="System.Web" Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js" Assembly="System.Web" Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js" Assembly="System.Web" Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js" Assembly="System.Web" Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js" Assembly="System.Web" Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </asp:ScriptManager>
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" runat="server" href="~/Pages/Default">Movies PVR</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a runat="server" href="~/Pages/">Home</a></li>
+                        <li><a runat="server" href="~/Pages/MovieList">Running Movies</a></li>
+                        <asp:PlaceHolder ID="PlaceForAdmin" runat="server" Visible="false">
+                            <li><a runat="server" href="~/Pages/AddMovie">Add Movie</a></li>
+                            <li><a runat="server" href="~/Pages/MovieOperations">Movie Operations</a></li>
+                            <li><a runat="server" href="~/Pages/AllUsers">All Users</a></li>
+                        </asp:PlaceHolder>
+                        <li><a runat="server" href="~/Pages/Contact">Contact</a></li>
+                    </ul>
+                    <asp:PlaceHolder ID="PlaceForAnonymous" runat="server">
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a runat="server" href="~/Pages/Register">Register</a></li>
+                                <li><a runat="server" href="~/Pages/Login">Log in</a></li>
+                            </ul>
+                        
+                    </asp:PlaceHolder>
+                    <asp:PlaceHolder ID="PlaceForUser" Visible="false" runat="server">                     
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><a runat="server" href="~Pages/Default" style="font-weight:bolder">Welcome 
+                                    <asp:Literal ID="HeadLoginName" runat="server"></asp:Literal>
+                                </a>
+                                </li>
+
+                                <li>
+                                    <asp:LoginStatus runat="server" LogoutAction="Redirect" LogoutText="Log off" LogoutPageUrl="~/Pages/Default"
+                                        OnLoggingOut="Unnamed_LoggingOut" />
+                                </li>
+                            </ul>
+                    </asp:PlaceHolder>
+                </div>
+            </div>
+        </div>
+        <div id="TitleContent" style="text-align: center">
+            <a runat="server" href="~/">
+                <asp:Image ID="Image1" runat="server" ImageUrl="~/Images/logo.JPG" BorderStyle="None" />
+            </a>
+            <br />
+        </div>
+        <div id="CategoryMenu" style="text-align: center">
+            <asp:ListView ID="categoryList" ItemType="MoviesPVR.Models.Genre"
+                runat="server" SelectMethod="GetGenres">
+                <ItemTemplate>
+                    <b style="font-size: large; font-style: normal">
+                        <a href="/Pages/MovieList.aspx?id=<%#: Item.GenreID %>"><%#: Item.GenreName %></a>
+                    </b>
+                </ItemTemplate>
+                <ItemSeparatorTemplate>|  </ItemSeparatorTemplate>
+            </asp:ListView>
+        </div>
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+            </asp:ContentPlaceHolder>
+            <hr />
+            <footer>
+                <p>&copy; <%: DateTime.Now.Year %> - Movies PVR</p>
+            </footer>
+        </div>
+
+    </form>
+</body>
+</html>
